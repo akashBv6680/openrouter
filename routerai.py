@@ -1,9 +1,10 @@
+
+
 import streamlit as st
 import requests
-
+import json
 # Configure OpenRouter API key
 openrouter_api_key = "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"
-
 def get_openrouter_response(user_input):
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
@@ -15,7 +16,18 @@ def get_openrouter_response(user_input):
         "messages": [{"role": "user", "content": user_input}]
     }
     response = requests.post(url, headers=headers, json=data)
-    return response.json()["choices"][0]["message"]["content"]
+
+    if response.status_code == 200:
+        try:
+            response_json = response.json()
+            if "choices" in response_json:
+                return response_json["choices"][0]["message"]["content"]
+            else:
+                return "Error: Unexpected API response format."
+        except Exception as e:
+            return f"Error: {str(e)}"
+    else:
+        return f"Error: {response.status_code}"
 
 # Streamlit app layout
 st.title("Advanced Chatbot")
