@@ -6,7 +6,7 @@ import streamlit as st
 import requests
 
 # Configure OpenAI API key
-openai_api_key = "sk-akash6680"
+openai_api_key = "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"
 
 def get_openai_response(user_input):
     url = "https://api.openai.com/v1/chat/completions"
