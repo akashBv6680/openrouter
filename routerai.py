@@ -2,30 +2,20 @@
 
 import streamlit as st
 import requests
-import json
-# Configure OpenRouter API key
-openrouter_api_key = "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"
-def get_openrouter_response(user_input):
-    url = "https://openrouter.ai/api/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {openrouter_api_key}",
-        "Content-Type": "application/json"
-    }
+
+# Configure Google Gemini API key
+google_api_key = "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"
+
+def get_gemini_response(user_input):
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + google_api_key
+    headers = {"Content-Type": "application/json"}
     data = {
-        "model": "gpt-3.5-turbo",  # or any other model available on OpenRouter
-        "messages": [{"role": "user", "content": user_input}]
+        "contents": [{"parts": [{"text": user_input}]}]
     }
     response = requests.post(url, headers=headers, json=data)
 
     if response.status_code == 200:
-        try:
-            response_json = response.json()
-            if "choices" in response_json:
-                return response_json["choices"][0]["message"]["content"]
-            else:
-                return "Error: Unexpected API response format."
-        except Exception as e:
-            return f"Error: {str(e)}"
+        return response.json()["candidates"][0]["content"]["parts"][0]["text"]
     else:
         return f"Error: {response.status_code}"
 
@@ -33,5 +23,5 @@ def get_openrouter_response(user_input):
 st.title("Advanced Chatbot")
 user_input = st.text_input("What would you like to ask?")
 if user_input:
-    chatbot_response = get_openrouter_response(user_input)
+    chatbot_response = get_gemini_response(user_input)
     st.write(f"Chatbot: {chatbot_response}")
