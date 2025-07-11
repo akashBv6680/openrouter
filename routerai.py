@@ -5,7 +5,7 @@ import streamlit as st
 import requests
 
 # Configure Google Gemini API key
-google_api_key = "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"
+google_api_key = "sk-akash6680"
 
 
 def get_gemini_response(user_input):
