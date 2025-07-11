@@ -4,7 +4,7 @@ import streamlit as st
 import requests
 import json
 # Configure OpenRouter API key
-openrouter_api_key = "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"
+openrouter_api_key = "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"
 def get_openrouter_response(user_input):
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
